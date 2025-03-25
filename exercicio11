@@ -1,0 +1,8 @@
+usuario = input("Digite seu nome de usuário: ")
+senha = input("Digite sua senha: ")
+
+while usuario == senha:
+    print("Erro! O usuário e a senha não podem ser iguais.")
+    senha = input("Digite uma nova senha: ")
+
+print("Cadastro realizado com sucesso!")
