@@ -1,0 +1,11 @@
+km_rodados = float(input("Quantos km foram rodados? "))
+dias_alugados = int(input("Por quantos dias o carro foi alugado? "))
+
+custo_base = dias_alugados * 90
+if km_rodados > 100:
+    taxa_extra = (km_rodados - 100) * 12
+    total = custo_base + taxa_extra
+else:
+    total = custo_base
+
+print(f"Total a pagar pelo aluguel: R${total:.2f}")
