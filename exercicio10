@@ -1,0 +1,5 @@
+num = int(input("Digite um número maior que 1: "))
+if eh_primo(num):
+    print(f"{num} é um número primo!")
+else:
+    print(f"{num} não é um número primo.")
