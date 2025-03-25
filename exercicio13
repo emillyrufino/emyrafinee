@@ -1,0 +1,11 @@
+salario_inicial = float(input("Digite o salário inicial: "))
+anos = int(input("Quantos anos se passaram? "))
+
+salario_atual = salario_inicial
+aumento_percentual = 0.05  # 5%
+
+for _ in range(anos):
+    salario_atual += salario_atual * aumento_percentual
+    aumento_percentual *= 2  # Dobra a cada ano
+
+print(f"Salário após {anos} anos: R${salario_atual:.2f}")
