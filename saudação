@@ -1,0 +1,53 @@
+import tkinter as tk
+from tkinter import messagebox
+from datetime import datetime
+
+# Função para atualizar a saudação com base no nome e hora
+def atualizar_saudacao():
+    nome = entry_nome.get()  # Captura o nome inserido pelo usuário
+    if nome:
+        hora_atual = datetime.now().hour
+        if hora_atual < 12:
+            saudacao = f'Bom dia, {nome}!'
+        elif hora_atual < 18:
+            saudacao = f'Boa tarde, {nome}!'
+        else:
+            saudacao = f'Boa noite, {nome}!'
+        label_saudacao.config(text=saudacao)
+    else:
+        messagebox.showwarning("Aviso", "Por favor, insira seu nome!")
+
+# Função para limpar os campos
+def limpar_campos():
+    entry_nome.delete(0, tk.END)  # Limpa o campo de texto
+    label_saudacao.config(text="")  # Limpa a saudação
+
+# Configuração da janela principal
+root = tk.Tk()
+root.title("Saudação Personalizada")
+
+# Definindo o tamanho da janela
+root.geometry("400x300")
+
+# Título
+titulo = tk.Label(root, text="Bem-vindo ao App!", font=("Arial", 16, "bold"))
+titulo.pack(pady=20)
+
+# Campo de entrada para o nome do usuário
+entry_nome = tk.Entry(root, font=("Arial", 14), width=25)
+entry_nome.pack(pady=10)
+
+# Botão para atualizar a saudação
+botao_atualizar = tk.Button(root, text="Atualizar Saudação", font=("Arial", 12), command=atualizar_saudacao)
+botao_atualizar.pack(pady=10)
+
+# Label para exibir a saudação personalizada
+label_saudacao = tk.Label(root, text="", font=("Arial", 14), fg="green")
+label_saudacao.pack(pady=10)
+
+# Botão para limpar os campos
+botao_limpar = tk.Button(root, text="Limpar", font=("Arial", 12), command=limpar_campos, bg="red", fg="white")
+botao_limpar.pack(pady=10)
+
+# Inicia a interface gráfica
+root.mainloop()
