@@ -1,0 +1,178 @@
+from flask import Flask, render_template_string
+
+app = Flask(__name__)
+
+# Lista de receitas nordestinas
+receitas = [
+    {
+        'nome': 'Baião de Dois',
+        'descricao': 'Prato típico do nordeste, com arroz, feijão verde e carne de sol.',
+        'ingredientes': ['Arroz', 'Feijão verde', 'Carne de sol', 'Cebola', 'Alho', 'Queijo coalho'],
+        'modo_preparo': 'Cozinhe o feijão verde, refogue a carne de sol desfiada com alho e cebola, misture o arroz e o feijão, adicione o queijo coalho por cima.'
+    },
+    {
+        'nome': 'Acarajé',
+        'descricao': 'Bolinho frito feito de feijão-fradinho, com recheio de camarão e vatapá.',
+        'ingredientes': ['Feijão-fradinho', 'Camarão', 'Vatapá', 'Cebola', 'Alho', 'Pimenta'],
+        'modo_preparo': 'Deixe o feijão de molho, retire a casca, moa e forme os bolinhos, frite-os e recheie com camarão e vatapá.'
+    },
+    {
+        'nome': 'Moqueca Baiana',
+        'descricao': 'Peixe cozido com leite de coco, azeite de dendê, pimentão e tomate.',
+        'ingredientes': ['Peixe', 'Leite de coco', 'Azeite de dendê', 'Tomate', 'Pimentão', 'Cebola'],
+        'modo_preparo': 'Tempere o peixe, refogue os legumes, adicione o leite de coco e azeite de dendê, cozinhe até o peixe ficar macio.'
+    },
+    {
+        'nome': 'Carne de Sol com Nhoque de Mandioca',
+        'descricao': 'Carne de sol desfiada servida com nhoque de mandioca e molho.',
+        'ingredientes': ['Carne de sol', 'Mandioca', 'Molho de tomate', 'Alho', 'Cebola'],
+        'modo_preparo': 'Desfie a carne de sol e refogue com alho e cebola, faça o nhoque de mandioca e sirva com o molho de tomate.'
+    },
+    {
+        'nome': 'Cuscuz Nordestino',
+        'descricao': 'Prato de milho cozido, geralmente servido com queijo coalho ou carne de sol.',
+        'ingredientes': ['Milho', 'Queijo coalho', 'Carne de sol', 'Cebola', 'Alho'],
+        'modo_preparo': 'Cozinhe o milho, deixe esfriar, depois faça camadas com queijo coalho e carne de sol desfiada.'
+    }
+]
+
+# HTML e CSS embutidos
+HTML_TEMPLATE = """
+<!DOCTYPE html>
+<html lang="pt-br">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Site de Receitas Nordestinas</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            background-color: #f4f4f4;
+            color: #333;
+        }
+
+        header {
+            text-align: center;
+            background-color: #2a9d8f;
+            color: white;
+            padding: 20px;
+        }
+
+        main {
+            padding: 20px;
+        }
+
+        ul {
+            list-style-type: none;
+            padding: 0;
+        }
+
+        li {
+            margin-bottom: 10px;
+        }
+
+        a {
+            text-decoration: none;
+            color: #2a9d8f;
+        }
+
+        a:hover {
+            text-decoration: underline;
+        }
+    </style>
+</head>
+<body>
+    <header>
+        <h1>Bem-vindo ao Site de Receitas Nordestinas!</h1>
+    </header>
+    <main>
+        <h2>Receitas disponíveis:</h2>
+        <ul>
+            {% for receita in receitas %}
+                <li>
+                    <a href="/receita/{{ receita['nome'] }}">
+                        {{ receita['nome'] }}
+                    </a> - {{ receita['descricao'] }}
+                </li>
+            {% endfor %}
+        </ul>
+    </main>
+</body>
+</html>
+"""
+
+RECEITA_TEMPLATE = """
+<!DOCTYPE html>
+<html lang="pt-br">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>{{ receita['nome'] }}</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            background-color: #f4f4f4;
+            color: #333;
+        }
+
+        header {
+            text-align: center;
+            background-color: #2a9d8f;
+            color: white;
+            padding: 20px;
+        }
+
+        main {
+            padding: 20px;
+        }
+
+        ul {
+            list-style-type: none;
+            padding: 0;
+        }
+
+        li {
+            margin-bottom: 10px;
+        }
+
+        a {
+            text-decoration: none;
+            color: #2a9d8f;
+        }
+
+        a:hover {
+            text-decoration: underline;
+        }
+    </style>
+</head>
+<body>
+    <header>
+        <h1>{{ receita['nome'] }}</h1>
+    </header>
+    <main>
+        <p><strong>Descrição:</strong> {{ receita['descricao'] }}</p>
+        <h3>Ingredientes:</h3>
+        <ul>
+            {% for ingrediente in receita['ingredientes'] %}
+                <li>{{ ingrediente }}</li>
+            {% endfor %}
+        </ul>
+        <h3>Modo de Preparo:</h3>
+        <p>{{ receita['modo_preparo'] }}</p>
+        <a href="/">Voltar para a página inicial</a>
+    </main>
+</body>
+</html>
+"""
+
+@app.route('/')
+def home():
+    return render_template_string(HTML_TEMPLATE, receitas=receitas)
+
+@app.route('/receita/<nome_receita>')
+def receita(nome_receita):
+    receita_encontrada = next((r for r in receitas if r['nome'] == nome_receita), None)
+    return render_template_string(RECEITA_TEMPLATE, receita=receita_encontrada)
+
+if __name__ == '__main__':
+    app.run(debug=True)
