@@ -1,0 +1,49 @@
+import json
+
+ARQUIVO = 'usuarios.json'
+
+def carregar_usuarios():
+    try:
+        with open(ARQUIVO, 'r') as f:
+            return json.load(f)
+    except FileNotFoundError:
+        return {}
+
+def salvar_usuarios(usuarios):
+    with open(ARQUIVO, 'w') as f:
+        json.dump(usuarios, f, indent=4)
+
+def criar_usuario(username, senha):
+    usuarios = carregar_usuarios()
+    if username in usuarios:
+        print("Usuário já existe.")
+    else:
+        usuarios[username] = {"senha": senha, "saldo": 0, "transacoes": []}
+        salvar_usuarios(usuarios)
+        print("Usuário criado com sucesso.")
+
+def login(username, senha):
+    usuarios = carregar_usuarios()
+    if username in usuarios and usuarios[username]["senha"] == senha:
+        return True
+    return False
+
+def depositar(username, valor):
+    usuarios = carregar_usuarios()
+    usuarios[username]["saldo"] += valor
+    usuarios[username]["transacoes"].append(f"Depósito: +R${valor}")
+    salvar_usuarios(usuarios)
+
+def sacar(username, valor):
+    usuarios = carregar_usuarios()
+    if usuarios[username]["saldo"] >= valor:
+        usuarios[username]["saldo"] -= valor
+        usuarios[username]["transacoes"].append(f"Saque: -R${valor}")
+        salvar_usuarios(usuarios)
+    else:
+        print("Saldo insuficiente.")
+
+def mostrar_transacoes(username):
+    usuarios = carregar_usuarios()
+    for t in usuarios[username]["transacoes"]:
+        print(t)
