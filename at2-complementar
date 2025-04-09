@@ -1,0 +1,8 @@
+def km_para_milhas(km):
+    return km * 0.621371
+
+def metros_para_centimetros(m):
+    return m * 100
+
+def litros_para_mililitros(l):
+    return l * 1000
