@@ -1,0 +1,40 @@
+import json
+
+ARQUIVO = 'reservas.json'
+TOTAL_ASSENTOS = 10
+
+def carregar_reservas():
+    try:
+        with open(ARQUIVO, 'r') as f:
+            return json.load(f)
+    except FileNotFoundError:
+        return [False] * TOTAL_ASSENTOS
+
+def salvar_reservas(reservas):
+    with open(ARQUIVO, 'w') as f:
+        json.dump(reservas, f)
+
+def visualizar_assentos():
+    reservas = carregar_reservas()
+    for i, reservado in enumerate(reservas):
+        status = "X" if reservado else str(i + 1)
+        print(f"[{status}]", end=" ")
+    print()
+
+def reservar_assento(numero):
+    reservas = carregar_reservas()
+    if not reservas[numero - 1]:
+        reservas[numero - 1] = True
+        salvar_reservas(reservas)
+        print("Reserva realizada com sucesso.")
+    else:
+        print("Assento já reservado.")
+
+def cancelar_reserva(numero):
+    reservas = carregar_reservas()
+    if reservas[numero - 1]:
+        reservas[numero - 1] = False
+        salvar_reservas(reservas)
+        print("Reserva cancelada.")
+    else:
+        print("Assento já está livre.")
